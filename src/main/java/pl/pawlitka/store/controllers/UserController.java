@@ -2,9 +2,11 @@ package pl.pawlitka.store.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import pl.pawlitka.store.dtos.ChangePasswordRequest;
 import pl.pawlitka.store.dtos.RegisterUserRequest;
 import pl.pawlitka.store.dtos.UpdateUserRequest;
 import pl.pawlitka.store.dtos.UserDto;
@@ -79,5 +81,25 @@ public class UserController {
 
         userRepository.delete(user);
         return  ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/change-password")
+    public ResponseEntity<Void> changePassword(@PathVariable Long id,
+                                               @RequestBody ChangePasswordRequest request
+    ) {
+        var user = userRepository.findById(id).orElse(null);
+        if(user == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isPasswordWrong = !user.getPassword().equals(request.getOldPassword());
+        if(isPasswordWrong) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        user.setPassword(request.getNewPassword());
+        userRepository.save(user);
+
+        return ResponseEntity.noContent().build();
     }
 }
