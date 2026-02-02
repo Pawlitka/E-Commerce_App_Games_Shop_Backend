@@ -53,7 +53,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> favoriteProducts = new HashSet<>();
+    private final Set<Product> favoriteProducts = new HashSet<>();
 
     public void addFavoriteProduct(Product product) {
         favoriteProducts.add(product);
