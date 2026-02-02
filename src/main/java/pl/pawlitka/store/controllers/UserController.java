@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+import pl.pawlitka.store.dtos.RegisterUserRequest;
 import pl.pawlitka.store.dtos.UserDto;
 import pl.pawlitka.store.mappers.UserMapper;
 import pl.pawlitka.store.repositories.UserRepository;
@@ -22,6 +24,7 @@ public class UserController {
     public Iterable<UserDto> getAllUsers(
             @RequestParam(required = false, defaultValue = "", name="sort") String sortBy
     ) {
+
         if(!Set.of("name", "email").contains(sortBy))
             sortBy = "name";
 
@@ -37,5 +40,18 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(
+            @RequestBody RegisterUserRequest request,
+            UriComponentsBuilder uriBuilder
+    ) {
+        var user = userMapper.toEntity(request);
+        userRepository.save(user);
+
+        var userDto = userMapper.toDto(user);
+        var uri = uriBuilder.path("/users/{id}").buildAndExpand(userDto.getId()).toUri();
+        return ResponseEntity.created(uri).body(userDto);
     }
 }
