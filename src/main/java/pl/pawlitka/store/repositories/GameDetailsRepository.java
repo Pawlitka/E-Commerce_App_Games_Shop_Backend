@@ -13,6 +13,6 @@ public interface GameDetailsRepository extends JpaRepository<GameDetails, Long> 
     @Query(value = "SELECT g FROM GameDetails g WHERE g.active = TRUE")
     List<GameDetails> findAllActive();
 
-    @Query(value = "SELECT g FROM GameDetails g WHERE g.active = TRUE AND g.id = :id ORDER BY g LIMIT 1")
+    @Query(value = "SELECT g FROM GameDetails g WHERE g.active = TRUE AND g.id = :id")
     Optional<GameDetails> findById(@Param("id") Long id);
 }
