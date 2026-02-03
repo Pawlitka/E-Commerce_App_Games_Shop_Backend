@@ -3,6 +3,10 @@ package pl.pawlitka.store.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pl.pawlitka.store.entities.Genre;
+
+import java.util.List;
+
 
 @AllArgsConstructor
 @Getter
@@ -14,6 +18,6 @@ public class GameDetailsDto {
     private Integer numberOfStars;
     private String description;
     private String title;
-    private String platformId;
-
+    private PlatformDto platform;
+    private List<GenreDto> genres;
 }

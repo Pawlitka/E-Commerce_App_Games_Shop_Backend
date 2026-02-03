@@ -39,6 +39,9 @@ public class GameDetails {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "active")
+    private boolean active;
+
     @OneToOne
     @JoinColumn(name = "platform_id", referencedColumnName = "id")
     private Platform platform;

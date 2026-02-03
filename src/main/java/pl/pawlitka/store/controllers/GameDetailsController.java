@@ -2,15 +2,14 @@ package pl.pawlitka.store.controllers;
 
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pl.pawlitka.store.dtos.GameDetailsDto;
-import pl.pawlitka.store.dtos.UserDto;
 import pl.pawlitka.store.mappers.GameDetailsMapper;
 import pl.pawlitka.store.repositories.GameDetailsRepository;
-
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -20,13 +19,8 @@ public class GameDetailsController {
     private final GameDetailsMapper gameDetailsMapper;
 
     @GetMapping
-     public Iterable<GameDetailsDto> getAllUsers(
-            @RequestParam(required = false, defaultValue = "", name="sort") String sortBy
-    ) {
-        if(!Set.of("title", "price").contains(sortBy))
-            sortBy = "title";
-
-        return gameDetailsRepository.findAll(Sort.by(sortBy)).stream()
+    public Iterable<GameDetailsDto> getAllGameDetails() {
+        return gameDetailsRepository.findAllActive().stream()
                 .map(gameDetailsMapper::toDto)
                 .toList();
     }
@@ -34,7 +28,7 @@ public class GameDetailsController {
     @GetMapping("/{id}")
     public ResponseEntity<GameDetailsDto> getGameDetails(@PathVariable Long id) {
         var gameDetails = gameDetailsRepository.findById(id).orElse(null);
-        if(gameDetails == null) {
+        if (gameDetails == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(gameDetailsMapper.toDto(gameDetails));

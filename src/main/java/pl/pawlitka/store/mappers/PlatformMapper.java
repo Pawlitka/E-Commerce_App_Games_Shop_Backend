@@ -4,10 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import pl.pawlitka.store.dtos.GameDetailsDto;
 import pl.pawlitka.store.entities.GameDetails;
+import pl.pawlitka.store.entities.Platform;
 
 @Mapper(componentModel = "spring")
-public interface GameDetailsMapper {
-     @Mapping(source = "platform", target = "platform")
-     @Mapping(source = "genres", target = "genres")
-     GameDetailsDto toDto(GameDetails gameDetails);
+public interface PlatformMapper {
+    GameDetailsDto toDto(Platform platform);
 }
