@@ -3,7 +3,7 @@ FROM bellsoft/liberica-openjdk-alpine:23 AS build
 WORKDIR /app
 
 # Kopiujemy wrapper Mavena (opcjonalnie, jeśli go używasz - to najlepsza praktyka)
-COPY .mvn/ .mvn
+COPY .mvn .mvn
 COPY mvnw pom.xml ./
 # Pobieramy zależności - to się wycache'uje
 RUN ./mvnw dependency:go-offline -B
