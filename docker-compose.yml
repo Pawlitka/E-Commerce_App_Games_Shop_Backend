@@ -1,0 +1,25 @@
+services:
+  database:
+      build:
+        context: ./database
+        dockerfile: Dockerfile
+      ports:
+        - "1521:1521"
+      environment:
+        - ORACLE_PWD=YourStrongPassword123
+        - ORACLE_CHARACTERSET=AL32UTF8
+      healthcheck:
+        test: [ "CMD", "bash", "-c", "echo 'select 1 from dual;' | sqlplus -s sys/${ORACLE_PWD}@localhost:1521/FREE as sysdba" ]
+        interval: 10s
+        timeout: 5s
+        retries: 10
+
+  spring:
+    build:
+      context: ./spring
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
