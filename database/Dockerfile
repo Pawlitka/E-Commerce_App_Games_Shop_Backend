@@ -3,8 +3,6 @@ FROM container-registry.oracle.com/database/free:latest
 
 # Copy your SQL scripts into the entrypoint directory
 # Scripts here run ONLY when the database is first created
-COPY ./init-scripts/ /container-entrypoint-initdb.d/
+COPY ./init-scripts/ /opt/oracle/scripts/startup/
 
-# (Optional) Set environment variables for the DB
-ENV ORACLE_PWD=YourStrongPassword123
-ENV ORACLE_CHARACTERSET=AL32UTF8
+ENV ORACLE_PWD=${ORACLE_PWD}
