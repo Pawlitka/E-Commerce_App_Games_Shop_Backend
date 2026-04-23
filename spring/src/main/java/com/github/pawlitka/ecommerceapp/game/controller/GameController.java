@@ -1,7 +1,11 @@
 package com.github.pawlitka.ecommerceapp.game.controller;
 
 import com.github.pawlitka.ecommerceapp.game.domain.entity.Game;
+import com.github.pawlitka.ecommerceapp.game.dto.GameDto;
+import com.github.pawlitka.ecommerceapp.game.mapper.GameMapper;
+import com.github.pawlitka.ecommerceapp.game.repository.GameRepository;
 import com.github.pawlitka.ecommerceapp.game.service.GameService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,14 +17,19 @@ import java.util.List;
 @RequestMapping("/games")
 @CrossOrigin(origins = "http://localhost:3000")
 public class GameController {
-    private final GameService gameService;
+    private final GameRepository gameRepository;
+    private final GameMapper gameMapper;
 
-    public GameController(GameService gameService) {
-        this.gameService = gameService;
+    public GameController(GameRepository gameRepository,GameMapper gameMapper) {
+        this.gameRepository = gameRepository;
+        this.gameMapper = gameMapper;
     }
 
     @GetMapping
-    public List<Game> getAll() {
-        return gameService.getAllGames();
+    public ResponseEntity<List<GameDto>> getAllGames() {
+        List<Game> games = gameRepository.findAllWithGenres();
+
+        List<GameDto> gamesDtos = gameMapper.toDtoList(games);
+        return ResponseEntity.ok(gamesDtos);
     }
 }

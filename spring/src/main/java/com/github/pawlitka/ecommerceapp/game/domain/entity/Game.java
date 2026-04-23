@@ -34,7 +34,7 @@ public class Game {
     private Double price;
 
     @Column(name = "main_image")
-    private BlobJavaType mainImage;
+    private byte[] mainImage;
 
     @Column(name = "reviews_count")
     @Min(0)
