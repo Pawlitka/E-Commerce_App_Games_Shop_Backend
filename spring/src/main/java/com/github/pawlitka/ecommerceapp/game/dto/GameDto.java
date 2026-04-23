@@ -23,4 +23,5 @@ public class GameDto {
     private Integer rate;
     private String description;
     private Set<GenreDto> genres;
+    private Set<PlatformDto> platforms;
 }

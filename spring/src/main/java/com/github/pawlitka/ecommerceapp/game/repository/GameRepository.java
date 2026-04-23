@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface GameRepository extends JpaRepository<Game,Long> {
-    @Query("SELECT g FROM Game g LEFT JOIN FETCH g.genres")
-    List<Game> findAllWithGenres();
+    @Query("SELECT g FROM Game g " +
+            "LEFT JOIN FETCH g.genres " +
+            "LEFT JOIN FETCH g.platforms")
+    List<Game> findAllWithGenresAndPlatforms();
 }

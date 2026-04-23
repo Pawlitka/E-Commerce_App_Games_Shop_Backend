@@ -27,7 +27,7 @@ public class GameController {
 
     @GetMapping
     public ResponseEntity<List<GameDto>> getAllGames() {
-        List<Game> games = gameRepository.findAllWithGenres();
+        List<Game> games = gameRepository.findAllWithGenresAndPlatforms();
 
         List<GameDto> gamesDtos = gameMapper.toDtoList(games);
         return ResponseEntity.ok(gamesDtos);

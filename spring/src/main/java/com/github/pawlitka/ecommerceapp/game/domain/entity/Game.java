@@ -33,6 +33,7 @@ public class Game {
     @DecimalMin(value = "0.0")
     private Double price;
 
+    @Lob
     @Column(name = "main_image")
     private byte[] mainImage;
 
@@ -60,4 +61,12 @@ public class Game {
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
     private Set<Genre> genres = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name="game_platform",
+            joinColumns = @JoinColumn(name = "game_id"),
+            inverseJoinColumns = @JoinColumn(name = "platform_id")
+    )
+    private Set<Platform> platforms = new HashSet<>();
 }
